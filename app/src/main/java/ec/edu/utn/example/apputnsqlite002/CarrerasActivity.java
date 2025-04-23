@@ -2,7 +2,9 @@ package ec.edu.utn.example.apputnsqlite002;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -16,7 +18,9 @@ public class CarrerasActivity extends AppCompatActivity {
     private Carrera carrera;
     private SqlAdmin sqlDb;
     private Carreras carreras;
+    private Facultades facultades;
     EditText txtCarreraId, txtCarreraNombre;
+    Spinner spnCarreraFacultad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +35,67 @@ public class CarrerasActivity extends AppCompatActivity {
 
         sqlDb = new SqlAdmin( this, "utn.db", null, 1);
         carreras = new Carreras(sqlDb);
+        facultades = new Facultades(sqlDb);
+
+        ArrayAdapter<Facultad> adapterFacultades = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                facultades.Read_All("-- Elija Facultad --")
+        );
 
         txtCarreraId = findViewById(R.id.txtCarreraId);
         txtCarreraNombre = findViewById(R.id.txtCarreraNombre);
+        spnCarreraFacultad = findViewById(R.id.spnCarreraFacultad);
+        spnCarreraFacultad.setAdapter(adapterFacultades);
+    }
+
+    private int getId()
+    {
+        return  Integer.parseInt( txtCarreraId.getText().toString() );
+    }
+
+    private void setId(int id)
+    {
+        if (id == 0)
+            txtCarreraId.setText("");
+        else
+            txtCarreraId.setText( "" + id);
+    }
+
+    private String getNombre()
+    {
+        return txtCarreraNombre.getText().toString();
+    }
+
+    private void setNombre(String nombre)
+    {
+        txtCarreraNombre.setText( nombre);
+    }
+
+    private Facultad getFacultad()
+    {
+        return (Facultad) spnCarreraFacultad.getSelectedItem();
+    }
+
+    private Facultad getFacultad(int i)
+    {
+        return  (Facultad) spnCarreraFacultad.getAdapter().getItem(i);
+    }
+
+    private void setFacultad( int id)
+    {
+        for(int i=0; i < spnCarreraFacultad.getAdapter().getCount(); i++)
+        {
+            if( getFacultad(i).Id == id)
+            {
+                spnCarreraFacultad.setSelection(i);
+                break;
+            }
+        }
     }
 
     public void cmdCarreraCreate_onClick(View v){
-        carrera = carreras.Create( Integer.parseInt( txtCarreraId.getText().toString() ), txtCarreraNombre.getText().toString(), 1 );
+        carrera = carreras.Create( getId(), getNombre(), getFacultad().Id );
         if( carrera != null)
             Toast.makeText(this, "REGISTRO INSERTADO CORRECTAMENTE ", Toast.LENGTH_LONG).show();
         else
@@ -46,22 +104,26 @@ public class CarrerasActivity extends AppCompatActivity {
 
     public void cmdCarreraReadById_onClick(View v)
     {
-        carrera = carreras.Read_ById( Integer.parseInt( txtCarreraId.getText().toString()) );
+        carrera = carreras.Read_ById( getId() );
         if( carrera != null)
         {
-            txtCarreraNombre.setText( carrera.Nombre );
+            setNombre( carrera.Nombre );
+            setFacultad( carrera.FacultadId);
         }
         else
         {
-            txtCarreraNombre.setText( "" );
+            setNombre("");
+            setFacultad(0);
             Toast.makeText(this, "REGISTRO NO ENCONTRADO !!! ", Toast.LENGTH_LONG).show();
         }
     }
 
     public void cmdCarreraUpdate_onClick(View v)
     {
-        carrera.Id = Integer.parseInt( txtCarreraId.getText().toString() );
-        carrera.Nombre = txtCarreraNombre.getText().toString();
+        carrera.Id = getId();
+        carrera.Nombre = getNombre();
+        carrera.FacultadId = getFacultad().Id;
+
         boolean resultado = carreras.Update( carrera );
         if( resultado)
             Toast.makeText(this, "REGISTRO ACTUALZIADO OK ", Toast.LENGTH_LONG).show();
@@ -71,11 +133,12 @@ public class CarrerasActivity extends AppCompatActivity {
 
     public void cmdCarreraDelete_onClick(View v)
     {
-        boolean resultado = carreras.Delete( Integer.parseInt( txtCarreraId.getText().toString() ));
+        boolean resultado = carreras.Delete( getId() );
         if(resultado)
         {
-            txtCarreraId.setText("");
-            txtCarreraNombre.setText("");
+            setId(0);
+            setNombre("");
+            setFacultad(0);
             Toast.makeText(this, "REGISTRO BORRADO OK", Toast.LENGTH_LONG).show();
         }
         else

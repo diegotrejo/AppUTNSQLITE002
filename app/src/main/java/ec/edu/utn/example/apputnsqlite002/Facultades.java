@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Facultades {
     private SqlAdmin sqlDb;
 
@@ -37,21 +40,31 @@ public class Facultades {
         }
     }
 
-    public  Facultad[] Read_All()
+    public List<Facultad> Read_All(String item0)
+    {
+        Facultad f = new Facultad();
+        f.Id = 0;
+        f.Nombre = item0;
+        List<Facultad> res = new ArrayList<>();
+        res.add(f);
+        res.addAll(this.Read_All());
+        return res;
+    }
+
+    public List<Facultad> Read_All()
     {
         SQLiteDatabase dbReader = sqlDb.getReadableDatabase();
         Cursor c = dbReader.rawQuery("SELECT id, nombre FROM facultades ORDER BY nombre", null);
 
         if( c.getCount() > 0)
         {
-            Facultad[] res = new Facultad[c.getCount()];
-            int i=0;
+            List<Facultad> res = new ArrayList<>();
             while (c.moveToNext())
             {
                 Facultad f = new Facultad();
                 f.Id = c.getInt(0);
                 f.Nombre = c.getString(1);
-                res[i++] = f;
+                res.add(f);
             }
             dbReader.close();
             return res;
@@ -100,7 +113,7 @@ public class Facultades {
             Log.e("miApp", "no se pudo actualizar el registro");
             return false;
         }
-            return true;
+        return true;
     }
 
     public boolean Delete(int id)
@@ -113,6 +126,6 @@ public class Facultades {
             Log.e("miApp", "no se pudo borrar el registro");
             return false;
         }
-            return  true;
+        return  true;
     }
 }

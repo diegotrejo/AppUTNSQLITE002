@@ -61,48 +61,48 @@
         app:layout_constraintTop_toBottomOf="@+id/txtCarreraId" />
 
     <Button
-        android:id="@+id/cmdCarreraCreate"
+        android:id="@+id/cmdCarreraDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="78dp"
-        android:layout_marginTop="49dp"
-        android:onClick="cmdCarreraCreate_onClick"
-        android:text="CREAR"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCarreraNombre" />
-
-    <Button
-        android:id="@+id/cmdCarreraUpdate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="34dp"
-        android:layout_marginTop="49dp"
-        android:onClick="cmdCarreraUpdate_onClick"
-        android:text="ACTUALIZAR"
-        app:layout_constraintStart_toEndOf="@+id/cmdCarreraCreate"
-        app:layout_constraintTop_toBottomOf="@+id/txtCarreraNombre" />
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="32dp"
+        android:onClick="cmdCarreraDelete_onClick"
+        android:text="BORRAR"
+        app:layout_constraintStart_toEndOf="@+id/cmdCarreraReadById"
+        app:layout_constraintTop_toBottomOf="@+id/cmdCarreraUpdate" />
 
     <Button
         android:id="@+id/cmdCarreraReadById"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="58dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="32dp"
         android:onClick="cmdCarreraReadById_onClick"
         android:text="LEER POR ID"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cmdCarreraCreate" />
 
     <Button
-        android:id="@+id/cmdCarreraDelete"
+        android:id="@+id/cmdCarreraUpdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
-        android:onClick="cmdCarreraDelete_onClick"
-        android:text="BORRAR"
-        app:layout_constraintStart_toEndOf="@+id/cmdCarreraReadById"
-        app:layout_constraintTop_toBottomOf="@+id/cmdCarreraUpdate" />
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="96dp"
+        android:onClick="cmdCarreraUpdate_onClick"
+        android:text="ACTUALIZAR"
+        app:layout_constraintStart_toEndOf="@+id/cmdCarreraCreate"
+        app:layout_constraintTop_toBottomOf="@+id/txtCarreraNombre" />
+
+    <Button
+        android:id="@+id/cmdCarreraCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginTop="96dp"
+        android:onClick="cmdCarreraCreate_onClick"
+        android:text="CREAR"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCarreraNombre" />
 
     <Button
         android:id="@+id/cmdCarrerasGoBack"
@@ -114,4 +114,23 @@
         android:text="Volver"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="48dp"
+        android:text="Facultad:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <Spinner
+        android:id="@+id/spnCarreraFacultad"
+        android:layout_width="206dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="41dp"
+        android:layout_marginTop="27dp"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/txtCarreraNombre" />
 </androidx.constraintlayout.widget.ConstraintLayout>

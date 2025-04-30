@@ -9,4 +9,13 @@ public class Estudiante {
     public  String Direccion;
 
     public  int CarreraId;
+
+    @Override
+    public String toString()
+    {
+        if ( Id == 0)
+            return  Apellidos;
+        else
+            return Id + " - " + Apellidos + " " + Nombres;
+    }
 }

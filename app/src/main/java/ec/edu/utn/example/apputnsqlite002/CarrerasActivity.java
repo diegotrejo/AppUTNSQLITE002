@@ -19,6 +19,7 @@ public class CarrerasActivity extends AppCompatActivity {
     private SqlAdmin sqlDb;
     private Carreras carreras;
     private Facultades facultades;
+
     EditText txtCarreraId, txtCarreraNombre;
     Spinner spnCarreraFacultad;
 

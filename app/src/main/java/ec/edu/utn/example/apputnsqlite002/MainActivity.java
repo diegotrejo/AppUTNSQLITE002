@@ -32,4 +32,10 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent( this, CarrerasActivity.class);
         startActivity(i);
     }
+
+    public void cmdNainEstudiantes_onClick(View v)
+    {
+        Intent i = new Intent(this, EstudiantesActivity.class);
+        startActivity(i);
+    }
 }

@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Estudiantes {
     private SqlAdmin sqlDb;
 
@@ -70,15 +73,25 @@ public class Estudiantes {
         }
     }
 
-    public Estudiante[] Read_All()
+    public List<Estudiante> Read_All(String item0, int carreraId)
+    {
+        Estudiante e = new Estudiante();
+        e.Id = 0;
+        e.Apellidos = item0;
+        List<Estudiante> res = new ArrayList<>();
+        res.add(e);
+        res.addAll(this.Read_ByCarreraId(carreraId));
+        return res;
+    }
+
+    public List<Estudiante> Read_All()
     {
         SQLiteDatabase dbReader = sqlDb.getReadableDatabase();
         Cursor c = dbReader.rawQuery("SELECT id, apellidos, nombres, direccion, nroCedula, carreraId FROM estudiantes ORDER BY apellidos, nombres", null);
+        List<Estudiante> res = new ArrayList<>();
 
         if( c.getCount() > 0)
         {
-            Estudiante[] res = new Estudiante[c.getCount()];
-            int i=0;
             while (c.moveToNext())
             {
                 Estudiante e = new Estudiante();
@@ -88,28 +101,26 @@ public class Estudiantes {
                 e.Direccion = c.getString(3);
                 e.NroCedula = c.getString(4);
                 e.CarreraId = c.getInt(5);
-                res[i++] = e;
+                res.add(e);
             }
-            dbReader.close();
-            return res;
         }
         else
         {
             Log.i("miApp", "no hay resultados de datos");
-            dbReader.close();
-            return null;
         }
+
+        dbReader.close();
+        return res;
     }
 
-    public Estudiante[] Read_ByCarreraId(int carreraId)
+    public List<Estudiante> Read_ByCarreraId(int carreraId)
     {
         SQLiteDatabase dbReader = sqlDb.getReadableDatabase();
         Cursor c = dbReader.rawQuery("SELECT id, apellidos, nombres, direccion, nroCedula, carreraId FROM estudiantes WHERE carreraId=" + carreraId + " ORDER BY apellidos, nombres", null);
+        List<Estudiante> res = new ArrayList<>();
 
         if( c.getCount() > 0)
         {
-            Estudiante[] res = new Estudiante[c.getCount()];
-            int i=0;
             while (c.moveToNext())
             {
                 Estudiante e = new Estudiante();
@@ -119,17 +130,16 @@ public class Estudiantes {
                 e.Direccion = c.getString(3);
                 e.NroCedula = c.getString(4);
                 e.CarreraId = c.getInt(5);
-                res[i++] = e;
+                res.add(e);
             }
-            dbReader.close();
-            return res;
         }
         else
         {
             Log.i("miApp", "no hay resultados de datos");
-            dbReader.close();
-            return null;
         }
+
+        dbReader.close();
+        return res;
     }
 
     public boolean Update(Estudiante est)

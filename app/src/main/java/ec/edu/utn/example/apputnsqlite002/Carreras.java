@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Carreras {
     private SqlAdmin sqlDb;
 
@@ -61,60 +64,67 @@ public class Carreras {
         }
     }
 
-    public Carrera[] Read_All()
+    public  List<Carrera> Read_All(String item0, int facultadId)
+    {
+        Carrera c = new Carrera();
+        c.Id = 0;
+        c.Nombre = item0;
+        List<Carrera> res = new ArrayList<>();
+        res.add(c);
+        res.addAll(this.Read_ByFacultadId(facultadId));
+        return  res;
+    }
+
+    public List<Carrera> Read_All()
     {
         SQLiteDatabase dbReader = sqlDb.getReadableDatabase();
         Cursor c = dbReader.rawQuery("SELECT id, nombre, facultadId FROM carreras ORDER BY nombre", null);
+        List<Carrera> res = new ArrayList<>();
 
         if( c.getCount() > 0)
         {
-            Carrera[] res = new Carrera[c.getCount()];
-            int i=0;
             while (c.moveToNext())
             {
                 Carrera carr = new Carrera();
                 carr.Id = c.getInt(0);
                 carr.Nombre = c.getString(1);
                 carr.FacultadId = c.getInt(2);
-                res[i++] = carr;
+                res.add(carr);
             }
-            dbReader.close();
-            return res;
         }
         else
         {
             Log.i("miApp", "no hay resultados de datos");
-            dbReader.close();
-            return null;
         }
+
+        dbReader.close();
+        return res;
     }
 
-    public Carrera[] Read_ByFacultadId(int facultadId)
+    public List<Carrera> Read_ByFacultadId(int facultadId)
     {
         SQLiteDatabase dbReader = sqlDb.getReadableDatabase();
         Cursor c = dbReader.rawQuery("SELECT id, nombre, facultadId FROM carreras WHERE facultadId=" + facultadId + " ORDER BY nombre", null);
+        List<Carrera> res = new ArrayList<>();
 
         if( c.getCount() > 0)
         {
-            Carrera[] res = new Carrera[c.getCount()];
-            int i=0;
             while (c.moveToNext())
             {
                 Carrera carr = new Carrera();
                 carr.Id = c.getInt(0);
                 carr.Nombre = c.getString(1);
                 carr.FacultadId = c.getInt(2);
-                res[i++] = carr;
+                res.add(carr);
             }
-            dbReader.close();
-            return res;
         }
         else
         {
             Log.i("miApp", "no hay resultados de datos");
-            dbReader.close();
-            return null;
         }
+
+        dbReader.close();
+        return res;
     }
 
     public boolean Update( Carrera carr)

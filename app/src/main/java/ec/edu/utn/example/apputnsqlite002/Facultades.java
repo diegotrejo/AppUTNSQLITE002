@@ -55,10 +55,10 @@ public class Facultades {
     {
         SQLiteDatabase dbReader = sqlDb.getReadableDatabase();
         Cursor c = dbReader.rawQuery("SELECT id, nombre FROM facultades ORDER BY nombre", null);
+        List<Facultad> res = new ArrayList<>();
 
         if( c.getCount() > 0)
         {
-            List<Facultad> res = new ArrayList<>();
             while (c.moveToNext())
             {
                 Facultad f = new Facultad();
@@ -66,15 +66,14 @@ public class Facultades {
                 f.Nombre = c.getString(1);
                 res.add(f);
             }
-            dbReader.close();
-            return res;
         }
         else
         {
             Log.i("miApp", "no hay resultados de datos");
-            dbReader.close();
-            return null;
         }
+
+        dbReader.close();
+        return res;
     }
 
     public  Facultad Read_ById(int id)
